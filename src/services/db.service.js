@@ -5,4 +5,4 @@ const config = require('../config');
 mongoose
 	.connect(config.MONGO_URI)
 	.then(() => console.log('Connected to MongoDB...'))
-	.catch((err) => console.err('Could not connect to MongoDB...'));
+	.catch((err) => console.error('Could not connect to MongoDB...'));
