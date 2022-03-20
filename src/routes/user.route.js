@@ -3,7 +3,7 @@ const userController = require('../controllers/user.controller');
 const router = require('express').Router();
 
 router.post('/', async (req, res) => {
-	const user = await userController.create(req.body);
+	const user = await userController.register(req.body);
 	res.send(user);
 });
 

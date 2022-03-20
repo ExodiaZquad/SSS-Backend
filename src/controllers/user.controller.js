@@ -12,7 +12,7 @@ module.exports = {
 		}
 	},
 
-	create: async (body) => {
+	register: async (body) => {
 		try {
 			// validate body
 			const { error } = validate(body);
