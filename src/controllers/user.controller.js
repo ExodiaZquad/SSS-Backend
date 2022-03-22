@@ -1,5 +1,6 @@
 const { User } = require('../models/user.model');
-const { validate } = require('../services/user.service');
+const { validate, generateAuthToken } = require('../services/user.service');
+const bcrypt = require('bcrypt');
 
 module.exports = {
 	findOne: async (email) => {
@@ -11,22 +12,23 @@ module.exports = {
 			return null;
 		}
 	},
-
 	register: async (body) => {
 		try {
 			// validate body
 			const { error } = validate(body);
-			if (error) return error.details[0].message;
+			if (error) return null;
 
-			// validate user
-			let user = await User.findOne({ email: body.email });
-			if (user) return 'User already Registered';
+			// create new user
+			let user = new User(body);
 
-			// create new user and save
-			user = new User(body);
+			// hash googleId and save
+			const salt = await bcrypt.genSalt(10);
+			user.googleId = await bcrypt.hash(user.googleId, salt);
 			await user.save();
 
-			return user;
+			// generate token and return it
+			const token = generateAuthToken(user._id);
+			return token;
 		} catch (error) {
 			console.log(error);
 			return null;
