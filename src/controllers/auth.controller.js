@@ -1,7 +1,5 @@
 const { User } = require('../models/user.model');
 const { validate } = require('../services/user.service');
-const userController = require('./user.controller');
-const bcrypt = require('bcrypt');
 const { findUserbByGoogleId } = require('../services/auth.service');
 
 module.exports = {
