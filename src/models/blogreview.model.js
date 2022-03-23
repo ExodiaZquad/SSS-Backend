@@ -22,12 +22,10 @@ const blogreviewSchema = new mongoose.Schema({
 		required: true,
 	},
 	userId_Like: {
-		type: Array,
-		required: true,
+		type: [],
 	},
 	userId_Dislike: {
-		type: Array,
-		required: true,
+		type: [],
 	},
 	typeOfsubject: {
 		type: String,

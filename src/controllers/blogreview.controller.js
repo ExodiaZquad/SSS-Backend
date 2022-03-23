@@ -1,10 +1,29 @@
 const { Blogreview } = require('../models/blogreview.model');
+const { validate } = require('../services/blogreview.service');
 
 module.exports = {
 	create: async (body) => {
 		try {
-			// create new user and save
-			let blogreview = new Blogreview(body);
+			//validate body
+			const { error } = validate(body);
+			if (error) return error.details[0].message;
+
+			//validate userId_Blogreview
+			let blogreview = await Blogreview.find({
+				userId_Blogreview: body.userId_Blogreview,
+			});
+
+			// if (blogreview.subjectId.includes(body.subjectId)) {
+			// 	return (
+			// 		blogreview.subjectId + ' <= This subjectId already created'
+			// 	);
+			// }
+			// if (blogreview)
+			// 	return (
+			// 		blogreview.subjectId + ' <= This subjectId already created'
+			// 	);
+
+			blogreview = new Blogreview(body);
 			await blogreview.save();
 			return blogreview;
 		} catch (error) {
