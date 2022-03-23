@@ -8,22 +8,7 @@ module.exports = {
 			const { error } = validate(body);
 			if (error) return error.details[0].message;
 
-			//validate userId_Blogreview
-			let blogreview = await Blogreview.find({
-				userId_Blogreview: body.userId_Blogreview,
-			});
-
-			// if (blogreview.subjectId.includes(body.subjectId)) {
-			// 	return (
-			// 		blogreview.subjectId + ' <= This subjectId already created'
-			// 	);
-			// }
-			// if (blogreview)
-			// 	return (
-			// 		blogreview.subjectId + ' <= This subjectId already created'
-			// 	);
-
-			blogreview = new Blogreview(body);
+			let blogreview = new Blogreview(body);
 			await blogreview.save();
 			return blogreview;
 		} catch (error) {
@@ -47,15 +32,14 @@ module.exports = {
 			// find and update
 			let blogreview = await Blogreview.findOne(
 				//filter
-				{ _id: body.targetIdObject },
+				{ _id: body._id },
 			);
 
 			// update to array
-
 			let userId = body.userId;
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
-
+			//toggle button like and cant like if disliked
 			if (
 				!list_userId_Like.includes(userId) &&
 				!list_userId_DisLike.includes(userId)
@@ -78,7 +62,7 @@ module.exports = {
 			// find and update
 			let blogreview = await Blogreview.findOne(
 				//filter
-				{ _id: body.targetIdObject },
+				{ _id: body._id },
 			);
 
 			// update to array
