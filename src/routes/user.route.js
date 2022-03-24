@@ -1,10 +1,10 @@
-const { User } = require('../models/user.model');
 const userController = require('../controllers/user.controller');
+const auth = require('../middleware/auth.middleware');
 const router = require('express').Router();
 
-router.post('/', async (req, res) => {
-	const user = await userController.create(req.body);
-	res.send(user);
+router.get('/', auth, async (req, res) => {
+	console.log('userId: ', req.userId);
+	res.send('PASS');
 });
 
 module.exports = router;

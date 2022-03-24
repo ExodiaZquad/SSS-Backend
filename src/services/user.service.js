@@ -1,4 +1,11 @@
+const config = require('../config');
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
+
+const generateAuthToken = (id) => {
+	const token = jwt.sign({ id }, config.JWT_PRIVATE_KEY);
+	return token;
+};
 
 const validate = (body) => {
 	const schema = Joi.object({
@@ -12,3 +19,4 @@ const validate = (body) => {
 };
 
 exports.validate = validate;
+exports.generateAuthToken = generateAuthToken;
