@@ -2,6 +2,14 @@ require('dotenv').config({ path: '../.env' });
 const config = require('./config');
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
+// setup cors
+app.use(
+	cors({
+		origin: ['http://locahost:3000'],
+	}),
+);
 
 // load DB service
 require('./services/db.service');
