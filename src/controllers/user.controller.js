@@ -34,4 +34,13 @@ module.exports = {
 			return null;
 		}
 	},
+	getProfileData: async (userId) => {
+		try {
+			const user = await User.findOne({ _id: userId.id });
+			return user;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	},
 };
