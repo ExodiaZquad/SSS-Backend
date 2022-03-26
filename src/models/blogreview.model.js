@@ -1,3 +1,4 @@
+const { required } = require('joi');
 const mongoose = require('mongoose');
 
 const blogreviewSchema = new mongoose.Schema({
@@ -30,6 +31,10 @@ const blogreviewSchema = new mongoose.Schema({
 	typeOfsubject: {
 		type: String,
 		required: true,
+	},
+	rate: {
+		type: Number,
+		default: 0,
 	},
 	date: {
 		type: Date,
