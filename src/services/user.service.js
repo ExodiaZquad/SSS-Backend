@@ -12,7 +12,7 @@ const validate = (body) => {
 		name: Joi.string().required(),
 		email: Joi.string().required(),
 		googleId: Joi.string().required(),
-		img: Joi.string().required(),
+		imageUrl: Joi.string().required(),
 	});
 
 	return schema.validate(body);
