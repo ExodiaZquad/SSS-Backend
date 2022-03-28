@@ -1,4 +1,5 @@
 const { User } = require('../models/user.model');
+const { Blogreview } = require('../models/blogreview.model');
 const { validate, generateAuthToken } = require('../services/user.service');
 const bcrypt = require('bcrypt');
 
@@ -34,13 +35,27 @@ module.exports = {
 			return null;
 		}
 	},
-	getProfileData: async (userId) => {
+	getProfileData: async (req, res) => {
 		try {
-			const user = await User.findOne({ _id: userId.id });
-			return user;
+			// find user by the _id given by the decoded token (auth)
+			const user = await User.findOne({ _id: req.userId.id });
+			const studentId = user.email.slice(0, 8); //bad approach!
+
+			// query specified user's reviews
+			const reviews = await Blogreview.find({
+				userId_Blogreview: studentId,
+			});
+
+			//return with user's reviews post(s) and favourite schedule(s)
+			const ret = {
+				blogReviews: reviews,
+				favSchedule: user.favSchedule,
+			};
+
+			return res.send(ret).status(200);
 		} catch (error) {
 			console.log(error);
-			return null;
+			return res.status(400);
 		}
 	},
 };

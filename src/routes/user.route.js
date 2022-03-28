@@ -10,9 +10,7 @@ router.get('/', auth, async (req, res) => {
 // @desc Get User Profile Data (user's review post, user's favorite schedule)
 // @route /api/users/profile
 router.get('/profile', auth, async (req, res) => {
-	const data = await userController.getProfileData(req.userId);
-	if (data) res.send(data).status(200);
-	res.status(400);
+	await userController.getProfileData(req, res);
 });
 
 module.exports = router;
