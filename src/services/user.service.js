@@ -18,5 +18,13 @@ const validate = (body) => {
 	return schema.validate(body);
 };
 
+const validateEmail = (email) => {
+	if (email.substring(9, email.length).toLowerCase() !== 'kmitl.ac.th')
+		return 'Not KMITL account.';
+
+	return null;
+};
+
 exports.validate = validate;
 exports.generateAuthToken = generateAuthToken;
+exports.validateEmail = validateEmail;

@@ -1,6 +1,11 @@
 const { User } = require('../models/user.model');
 const { Blogreview } = require('../models/blogreview.model');
 const { validate, generateAuthToken } = require('../services/user.service');
+const {
+	validate,
+	generateAuthToken,
+	validateEmail,
+} = require('../services/user.service');
 const bcrypt = require('bcrypt');
 
 module.exports = {
@@ -16,7 +21,12 @@ module.exports = {
 	register: async (body) => {
 		try {
 			// validate body
-			const { error } = validate(body);
+			let { error } = validate(body);
+			if (error) return null;
+
+			// validate eamil
+			const { email } = body;
+			error = validateEmail(email);
 			if (error) return null;
 
 			// create new user
