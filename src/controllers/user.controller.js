@@ -1,6 +1,5 @@
 const { User } = require('../models/user.model');
 const { Blogreview } = require('../models/blogreview.model');
-const { validate, generateAuthToken } = require('../services/user.service');
 const {
 	validate,
 	generateAuthToken,
