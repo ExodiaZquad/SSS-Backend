@@ -1,4 +1,5 @@
 const { User } = require('../models/user.model');
+const { Blogreview } = require('../models/blogreview.model');
 const {
 	validate,
 	generateAuthToken,
@@ -41,6 +42,29 @@ module.exports = {
 		} catch (error) {
 			console.log(error);
 			return null;
+		}
+	},
+	getProfileData: async (req, res) => {
+		try {
+			// find user by the _id given by the decoded token (auth)
+			const user = await User.findOne({ _id: req.userId.id });
+			const studentId = user.email.slice(0, 8); //bad approach!
+
+			// query specified user's reviews
+			const reviews = await Blogreview.find({
+				userId_Blogreview: studentId,
+			});
+
+			//return with user's reviews post(s) and favourite schedule(s)
+			const ret = {
+				blogReviews: reviews,
+				favSchedule: user.favSchedule,
+			};
+
+			return res.send(ret).status(200);
+		} catch (error) {
+			console.log(error);
+			return res.status(400);
 		}
 	},
 };
