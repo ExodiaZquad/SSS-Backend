@@ -70,7 +70,6 @@ module.exports = {
 			let userId = body.userId;
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
-
 			if (
 				!list_userId_Like.includes(userId) &&
 				!list_userId_DisLike.includes(userId)
