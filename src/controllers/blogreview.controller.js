@@ -40,11 +40,9 @@ module.exports = {
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
 			//toggle button like and cant like if disliked
-			if (
-				!list_userId_Like.includes(userId) &&
-				!list_userId_DisLike.includes(userId)
-			) {
+			if (!list_userId_Like.includes(userId)) {
 				list_userId_Like.push(userId);
+				list_userId_DisLike.pull(userId);
 			} else if (list_userId_Like.includes(userId)) {
 				list_userId_Like.pull(userId);
 			}
@@ -71,11 +69,9 @@ module.exports = {
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
 
-			if (
-				!list_userId_Like.includes(userId) &&
-				!list_userId_DisLike.includes(userId)
-			) {
+			if (!list_userId_DisLike.includes(userId)) {
 				list_userId_DisLike.push(userId);
+				list_userId_Like.pull(userId);
 			} else if (list_userId_DisLike.includes(userId)) {
 				list_userId_DisLike.pull(userId);
 			}
