@@ -37,6 +37,7 @@ module.exports = {
 
 			// update to array
 			let userId = body.userId;
+
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
 			//toggle button like and cant like if disliked
@@ -66,6 +67,7 @@ module.exports = {
 			// update to array
 
 			let userId = body.userId;
+
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
 

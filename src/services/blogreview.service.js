@@ -16,6 +16,7 @@ const validate = (body) => {
 		userId_Dislike: Joi.array().items(Joi.string().pattern(/^[0-9]+$/)),
 
 		typeOfsubject: Joi.string().required(),
+		rate: Joi.number().integer().min(0).max(5),
 	});
 
 	return schema.validate(body);
