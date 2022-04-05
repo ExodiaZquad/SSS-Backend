@@ -3,6 +3,7 @@ const router = require('express').Router();
 const auth = require('../middleware/auth.middleware');
 
 router.post('/', auth, async (req, res) => {
+	console.log(req.userId);
 	const blogreview = await blogreviewController.create(req.body);
 	res.send(blogreview);
 	// console.log(blogreview);
