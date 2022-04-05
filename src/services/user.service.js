@@ -12,11 +12,19 @@ const validate = (body) => {
 		name: Joi.string().required(),
 		email: Joi.string().required(),
 		googleId: Joi.string().required(),
-		img: Joi.string().required(),
+		imageUrl: Joi.string().required(),
 	});
 
 	return schema.validate(body);
 };
 
+const validateEmail = (email) => {
+	if (email.substring(9, email.length).toLowerCase() !== 'kmitl.ac.th')
+		return 'Not KMITL account.';
+
+	return null;
+};
+
 exports.validate = validate;
 exports.generateAuthToken = generateAuthToken;
+exports.validateEmail = validateEmail;

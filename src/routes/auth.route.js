@@ -3,6 +3,7 @@ const userController = require('../controllers/user.controller');
 
 const router = require('express').Router();
 
+// POST XXXXXXX/api/auth/
 router.post('/', async (req, res) => {
 	// Authentication
 	let token = await authController.auth(req.body);
