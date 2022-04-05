@@ -5,17 +5,12 @@ const validate = (body) => {
 		subjectId: Joi.string()
 			.pattern(/^[0-9]+$/)
 			.required(),
-		subjectName: Joi.string().required(),
 		textBlogreview: Joi.string(),
-		userId_Blogreview: Joi.string()
-			.pattern(/^[0-9]+$/)
-			.required(),
-		userName_Blogreview: Joi.string().required(),
+		userId_Blogreview: Joi.string().required(),
 
-		userId_Like: Joi.array().items(Joi.string().pattern(/^[0-9]+$/)),
-		userId_Dislike: Joi.array().items(Joi.string().pattern(/^[0-9]+$/)),
+		userId_Like: Joi.array().items(Joi.string()),
+		userId_Dislike: Joi.array().items(Joi.string()),
 
-		typeOfsubject: Joi.string().required(),
 		rate: Joi.number().integer().min(0).max(5),
 	});
 

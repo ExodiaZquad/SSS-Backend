@@ -2,13 +2,17 @@ const { Blogreview } = require('../models/blogreview.model');
 const { validate } = require('../services/blogreview.service');
 
 module.exports = {
-	create: async (body) => {
+	create: async (req) => {
 		try {
+			//userId_Blogreview
+			console.log(req);
+			req.body.userId_Blogreview = req.userId.id;
 			//validate body
-			const { error } = validate(body);
+			const { error } = validate(req.body);
 			if (error) return error.details[0].message;
 
-			let blogreview = new Blogreview(body);
+			//save db
+			let blogreview = new Blogreview(req.body);
 			await blogreview.save();
 			return blogreview;
 		} catch (error) {
@@ -27,16 +31,20 @@ module.exports = {
 		}
 	},
 
-	like: async (body) => {
+	like: async (req) => {
 		try {
 			// find and update
+			// console.log(req.body);
+			// console.log(req.userId);
+			//find targetpost id
 			let blogreview = await Blogreview.findOne(
-				//filter
-				{ _id: body._id },
+				//filter by object post id
+				{ _id: req.body.target_id },
 			);
 
 			// update to array
-			let userId = body.userId;
+			//user who like
+			let userId = req.userId.id;
 
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
@@ -56,17 +64,17 @@ module.exports = {
 		}
 	},
 
-	dislike: async (body) => {
+	dislike: async (req) => {
 		try {
 			// find and update
 			let blogreview = await Blogreview.findOne(
 				//filter
-				{ _id: body._id },
+				{ _id: req.body.target_id },
 			);
 
 			// update to array
 
-			let userId = body.userId;
+			let userId = req.userId.id;
 
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
