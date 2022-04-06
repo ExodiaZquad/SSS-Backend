@@ -16,10 +16,14 @@ const validate = (body) => {
 
 	return schema.validate(body);
 };
-// const validate_like_dislike = (body) => {
-// 	const schema = Joi.object({ _id: Joi.string(), userId: Joi.string() });
 
-// 	return schema.validate(body);
-// };
+const validate_like_dislike = (body) => {
+	const schema2 = Joi.object({
+		target_id: Joi.string().required(),
+	});
 
+	return schema2.validate(body);
+};
+
+exports.validate_like_dislike = validate_like_dislike;
 exports.validate = validate;

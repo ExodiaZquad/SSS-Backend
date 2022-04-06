@@ -6,7 +6,6 @@ const blogreviewSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-
 	textBlogreview: {
 		type: String,
 		required: true,
@@ -15,7 +14,6 @@ const blogreviewSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-
 	userId_Like: {
 		//userid object
 		type: [],
@@ -24,7 +22,6 @@ const blogreviewSchema = new mongoose.Schema({
 		//userid object
 		type: [],
 	},
-
 	rate: {
 		type: Number,
 		default: 0,
