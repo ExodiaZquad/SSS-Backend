@@ -1,11 +1,14 @@
 const { Blogreview } = require('../models/blogreview.model');
-const { validate } = require('../services/blogreview.service');
+const {
+	validate,
+	validate_like_dislike,
+} = require('../services/blogreview.service');
 
 module.exports = {
-	create: async (req) => {
+	create: async (req, res) => {
 		try {
 			//userId_Blogreview
-			console.log(req);
+			// console.log(req);
 			req.body.userId_Blogreview = req.userId.id;
 			//validate body
 			const { error } = validate(req.body);
@@ -31,11 +34,13 @@ module.exports = {
 		}
 	},
 
-	like: async (req) => {
+	like: async (req, res) => {
 		try {
 			// find and update
-			// console.log(req.body);
-			// console.log(req.userId);
+
+			//validate
+			const { error } = validate_like_dislike(req.body);
+			if (error) return error.details[0].message;
 			//find targetpost id
 			let blogreview = await Blogreview.findOne(
 				//filter by object post id
@@ -64,9 +69,14 @@ module.exports = {
 		}
 	},
 
-	dislike: async (req) => {
+	dislike: async (req, res) => {
 		try {
 			// find and update
+
+			//validate
+			const { error } = validate_like_dislike(req.body);
+			if (error) return error.details[0].message;
+
 			let blogreview = await Blogreview.findOne(
 				//filter
 				{ _id: req.body.target_id },
