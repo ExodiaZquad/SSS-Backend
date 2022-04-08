@@ -1,4 +1,5 @@
 {
+
 	"name": "sss-backend",
 	"version": "1.0.0",
 	"description": "",
@@ -24,4 +25,5 @@
 		"lodash": "^4.17.21",
 		"mongoose": "^6.2.7"
 	}
+
 }

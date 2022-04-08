@@ -5,25 +5,25 @@ const validate = (body) => {
 		subjectId: Joi.string()
 			.pattern(/^[0-9]+$/)
 			.required(),
-		subjectName: Joi.string().required(),
 		textBlogreview: Joi.string(),
-		userId_Blogreview: Joi.string()
-			.pattern(/^[0-9]+$/)
-			.required(),
-		userName_Blogreview: Joi.string().required(),
+		userId_Blogreview: Joi.string().required(),
 
-		userId_Like: Joi.array().items(Joi.string().pattern(/^[0-9]+$/)),
-		userId_Dislike: Joi.array().items(Joi.string().pattern(/^[0-9]+$/)),
+		userId_Like: Joi.array().items(Joi.string()),
+		userId_Dislike: Joi.array().items(Joi.string()),
 
-		typeOfsubject: Joi.string().required(),
+		rate: Joi.number().integer().min(0).max(5),
 	});
 
 	return schema.validate(body);
 };
-// const validate_like_dislike = (body) => {
-// 	const schema = Joi.object({ _id: Joi.string(), userId: Joi.string() });
 
-// 	return schema.validate(body);
-// };
+const validate_like_dislike = (body) => {
+	const schema2 = Joi.object({
+		target_id: Joi.string().required(),
+	});
 
+	return schema2.validate(body);
+};
+
+exports.validate_like_dislike = validate_like_dislike;
 exports.validate = validate;

@@ -1,14 +1,21 @@
 const { Blogreview } = require('../models/blogreview.model');
-const { validate } = require('../services/blogreview.service');
+const {
+	validate,
+	validate_like_dislike,
+} = require('../services/blogreview.service');
 
 module.exports = {
-	create: async (body) => {
+	create: async (req, res) => {
 		try {
+			//userId_Blogreview
+			// console.log(req);
+			req.body.userId_Blogreview = req.userId.id;
 			//validate body
-			const { error } = validate(body);
+			const { error } = validate(req.body);
 			if (error) return error.details[0].message;
 
-			let blogreview = new Blogreview(body);
+			//save db
+			let blogreview = new Blogreview(req.body);
 			await blogreview.save();
 			return blogreview;
 		} catch (error) {
@@ -27,16 +34,23 @@ module.exports = {
 		}
 	},
 
-	like: async (body) => {
+	like: async (req, res) => {
 		try {
 			// find and update
+
+			//validate
+			const { error } = validate_like_dislike(req.body);
+			if (error) return error.details[0].message;
+			//find targetpost id
 			let blogreview = await Blogreview.findOne(
-				//filter
-				{ _id: body._id },
+				//filter by object post id
+				{ _id: req.body.target_id },
 			);
 
 			// update to array
-			let userId = body.userId;
+			//user who like
+			let userId = req.userId.id;
+
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
 			//toggle button like and cant like if disliked
@@ -55,17 +69,23 @@ module.exports = {
 		}
 	},
 
-	dislike: async (body) => {
+	dislike: async (req, res) => {
 		try {
 			// find and update
+
+			//validate
+			const { error } = validate_like_dislike(req.body);
+			if (error) return error.details[0].message;
+
 			let blogreview = await Blogreview.findOne(
 				//filter
-				{ _id: body._id },
+				{ _id: req.body.target_id },
 			);
 
 			// update to array
 
-			let userId = body.userId;
+			let userId = req.userId.id;
+
 			let list_userId_Like = blogreview.userId_Like;
 			let list_userId_DisLike = blogreview.userId_Dislike;
 
