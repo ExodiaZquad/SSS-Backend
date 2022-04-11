@@ -4,7 +4,7 @@ const scheduleController = require('../controllers/schedule.controller');
 const { isSameIdInList } = require('../services/schedule.service');
 const router = require('express').Router();
 
-router.get('/generateSchedule', async (req, res) => {
+router.get('/generate', async (req, res) => {
 	// GET theories form id
 	const { subjects: subjectsId } = req.body;
 	const theories = await subjectController.findTheoriesById(subjectsId);
@@ -19,7 +19,7 @@ router.get('/generateSchedule', async (req, res) => {
 
 	// Generate schedules
 	const generated = scheduleController.generateSchdule(combination, labs);
-	console.log(generated.length);
+	// console.log(generated.length);
 
 	//// Read the generated
 	// for (let i = 0; i < generated.length; i++) {
