@@ -4,8 +4,12 @@ const auth = require('../middleware/auth.middleware');
 
 router.post('/', auth, async (req, res) => {
 	const blogreview = await blogreviewController.create(req, res);
-	// res.status(201).send('201 Created');
-	res.send(blogreview);
+	// if (blogreview) {
+	// 	return res.status(201).send(blogreview);
+	// }
+	// if (blogreview === error) {
+	// 	return res.status(400).send(blogreview);
+	// }
 	// console.log(blogreview);
 });
 
@@ -17,14 +21,14 @@ router.get('/', auth, async (req, res) => {
 router.put('/like', auth, async (req, res) => {
 	const blogreview = await blogreviewController.like(req, res);
 	// res.status(200).send('200 updated');
-	res.send(blogreview);
+	// res.send(blogreview);
 	// console.log(blogreview);
 });
 
 router.put('/dislike', auth, async (req, res) => {
 	const blogreview = await blogreviewController.dislike(req, res);
 	// res.status(200).send('200 updated');
-	res.send(blogreview);
+	// res.send(blogreview);
 	// console.log(blogreview);
 });
 

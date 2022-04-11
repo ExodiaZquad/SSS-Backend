@@ -12,19 +12,19 @@ module.exports = {
 			req.body.userId_Blogreview = req.userId.id;
 			//validate body
 			const { error } = validate(req.body);
-			if (error) return error.details[0].message;
+			if (error) return res.status(400).send(error.details[0].message);
 
 			//save db
 			let blogreview = new Blogreview(req.body);
 			await blogreview.save();
-			return blogreview;
+			return res.status(201).send(blogreview);
 		} catch (error) {
 			console.log(error);
-			return null;
+			return res.status(404).send();
 		}
 	},
 
-	getAll: async () => {
+	getAll: async (req, res) => {
 		try {
 			let blogreview = await Blogreview.find({});
 			return blogreview;
@@ -46,6 +46,7 @@ module.exports = {
 				//filter by object post id
 				{ _id: req.body.target_id },
 			);
+			if (!blogreview) return res.status(404).send('NOT FOUND');
 
 			// update to array
 			//user who like
@@ -62,10 +63,10 @@ module.exports = {
 			}
 
 			await blogreview.save();
-			return blogreview;
+			return res.status(200).send();
 		} catch (error) {
 			console.log(error);
-			return null;
+			return res.status(404).send();
 		}
 	},
 
@@ -81,6 +82,7 @@ module.exports = {
 				//filter
 				{ _id: req.body.target_id },
 			);
+			if (!blogreview) return res.status(404).send('NOT FOUND');
 
 			// update to array
 
@@ -97,10 +99,10 @@ module.exports = {
 			}
 
 			await blogreview.save();
-			return blogreview;
+			return res.status(200).send();
 		} catch (error) {
 			console.log(error);
-			return null;
+			return res.status(404).send();
 		}
 	},
 };
