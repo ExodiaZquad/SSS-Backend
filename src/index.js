@@ -3,6 +3,7 @@ const config = require('./config');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const morgan = require('morgan');
 
 // setup cors
 app.use(
@@ -10,6 +11,9 @@ app.use(
 		origin: ['http://localhost:3000'],
 	}),
 );
+
+// dependency for logging messages
+app.use(morgan('dev'));
 
 // load DB service
 require('./services/db.service');

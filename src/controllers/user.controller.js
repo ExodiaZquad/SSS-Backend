@@ -67,4 +67,20 @@ module.exports = {
 			return res.status(400);
 		}
 	},
+	getUserData: async (req, res) => {
+		try {
+			// find user by _id given by auth services
+			const user = await User.findOne({ _id: req.userId.id });
+
+			const ret = {
+				name: user.name,
+				imgUrl: user.imageUrl,
+			};
+
+			return res.send(ret).status(200);
+		} catch (error) {
+			console.log(error);
+			return res.status(400);
+		}
+	},
 };
