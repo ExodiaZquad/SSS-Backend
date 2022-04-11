@@ -20,4 +20,12 @@ const validate = (body) => {
 	return schema.validate(body);
 };
 
+const mergeData = (subjects) => {
+	const sec = subjects.map((subject) => subject.sec);
+	let merge = { ...subjects[0].toObject(), sec };
+
+	return merge;
+};
+
 exports.validate = validate;
+exports.mergeData = mergeData;
