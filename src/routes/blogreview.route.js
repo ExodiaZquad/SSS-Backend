@@ -15,7 +15,8 @@ router.post('/', auth, async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
 	const blogreview = await blogreviewController.getAll();
-	res.send(blogreview);
+	if (blogreview) return res.status(200).send(blogreview);
+	return res.status(400).send(blogreview);
 });
 
 router.put('/like', auth, async (req, res) => {
