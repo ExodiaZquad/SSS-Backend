@@ -152,4 +152,15 @@ module.exports = {
 			return res.status(404).send();
 		}
 	},
+
+	delete: async (req, res) => {
+		try {
+			console.log(req.body);
+			await Blogreview.deleteOne({});
+			return res.status(201).send(blogreview);
+		} catch (error) {
+			console.log(error);
+			return res.status(404).send();
+		}
+	},
 };
