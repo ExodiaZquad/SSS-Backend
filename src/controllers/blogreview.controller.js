@@ -53,9 +53,7 @@ module.exports = {
 			for (let i = 0; i < theories.length; i++) {
 				map_theories.set(theories[i].id, theories[i].name);
 			}
-
 			// console.log(map_theories);
-
 			loop2: for (let i = 0; i < blogreview.length; i++) {
 				let temp = {
 					...blogreview[i].toObject(),
