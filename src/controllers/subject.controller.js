@@ -5,14 +5,19 @@ const { mergeData } = require('../services/subject.service');
 module.exports = {
 	findSubjectById: async (id) => {
 		try {
-			const subject = [];
+			let subject = {};
 			// Theories
 			const theories = await Theory.find({ id });
-			if (theories.length) subject.push(mergeData(theories));
+			if (theories.length)
+				subject = { ...mergeData(theories, 'theoryTime') };
 
 			// Labs
 			const labs = await Lab.find({ id });
-			if (labs.length) subject.push(mergeData(labs));
+			if (labs.length) {
+				const { sec, labTime } = mergeData(labs, 'labTime');
+				subject.labSec = sec;
+				subject.labTime = labTime;
+			}
 
 			return subject;
 		} catch (error) {
