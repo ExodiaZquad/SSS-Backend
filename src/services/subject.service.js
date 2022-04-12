@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const _ = require('lodash');
 
 const validate = (body) => {
 	const schema = Joi.object({
@@ -20,11 +21,60 @@ const validate = (body) => {
 	return schema.validate(body);
 };
 
-const mergeData = (subjects) => {
+const mergeData = (subjects, type) => {
 	const sec = subjects.map((subject) => subject.sec);
 	let merge = { ...subjects[0].toObject(), sec };
+	merge = _.pick(
+		merge,
+		'_id',
+		'id',
+		'name',
+		'sec',
+		'credit',
+		'type',
+		'hasLab',
+	);
+
+	let timeBackup = [];
+	for (let i = 0; i < subjects.length; i++) {
+		const date = transformDate(subjects[i].class.start);
+		const time = transformTime(
+			subjects[i].class.start,
+			subjects[i].class.start,
+		);
+
+		timeBackup.push(date + ' ' + time);
+	}
+
+	merge[type] = timeBackup;
 
 	return merge;
+};
+
+const transformTime = (start, end) => {
+	const dotToHyphen = (date) => {
+		let time = date.substr(date.length - 8);
+		time = time.substr(0, 5);
+		time = time.replace(':', '.');
+		return time;
+	};
+
+	return dotToHyphen(start) + ' - ' + dotToHyphen(end);
+};
+
+const transformDate = (date) => {
+	const compareDate = {
+		'March 1': 'Sunday',
+		'March 2': 'Monday',
+		'March 3': 'Tuesday',
+		'March 4': 'Wednesday',
+		'March 5': 'Thursday',
+		'March 6': 'Friday',
+		'March 7': 'Saturday',
+	};
+
+	const dateBeforeComma = date.substr(0, date.indexOf(','));
+	return compareDate[dateBeforeComma];
 };
 
 exports.validate = validate;
