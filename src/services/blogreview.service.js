@@ -25,5 +25,12 @@ const validate_like_dislike = (body) => {
 	return schema2.validate(body);
 };
 
+const validate_whoDelete_isSame_objectId = (body) => {
+	const { error } = validate_like_dislike(body);
+	if (error) return error;
+
+	return true;
+};
+exports.validate_whoDelete_isSame_objectId = validate_whoDelete_isSame_objectId;
 exports.validate_like_dislike = validate_like_dislike;
 exports.validate = validate;

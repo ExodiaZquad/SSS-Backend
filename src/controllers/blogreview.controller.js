@@ -1,10 +1,10 @@
 const { Blogreview } = require('../models/blogreview.model');
 const { User } = require('../models/user.model');
-const userController = require('../controllers/user.controller');
 const { Theory } = require('../models/theory.model');
 const {
 	validate,
 	validate_like_dislike,
+	validate_whoDelete_isSame_objectId,
 } = require('../services/blogreview.service');
 const { result, map } = require('lodash');
 
@@ -17,6 +17,9 @@ module.exports = {
 			//validate body
 			const { error } = validate(req.body);
 			if (error) return res.status(400).send(error.details[0].message);
+
+			if (!(await Theory.findOne({ id: req.body.subjectId })))
+				return res.status(400).send('NOT FOUND SUBJECT');
 
 			//save db
 			let blogreview = new Blogreview(req.body);
@@ -155,9 +158,24 @@ module.exports = {
 
 	delete: async (req, res) => {
 		try {
-			console.log(req.body);
-			await Blogreview.deleteOne({});
-			return res.status(201).send(blogreview);
+			console.log(req.userId.id);
+			let userId = req.userId.id;
+
+			//validate
+			const { error } = validate_whoDelete_isSame_objectId(req.body);
+			if (error) return error.details[0].message;
+
+			let blogreview = await Blogreview.findOne(
+				//filter
+				{ _id: req.body.target_id },
+			);
+			if (!blogreview) return res.status(404).send('NOT FOUND');
+
+			if (blogreview.userId_Blogreview != userId)
+				return res.status(400).send('NOT MATCH');
+
+			await Blogreview.deleteOne({ _id: blogreview._id });
+			return res.status(200).send('DELETE');
 		} catch (error) {
 			console.log(error);
 			return res.status(404).send();
