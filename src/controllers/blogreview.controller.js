@@ -98,7 +98,7 @@ module.exports = {
 				//filter by object post id
 				{ _id: req.body.target_id },
 			);
-			if (!blogreview) return res.status(404).send('NOT FOUND');
+			if (!blogreview) return res.status(400).send('NOT FOUND');
 
 			// update to array
 			//user who like
@@ -134,7 +134,7 @@ module.exports = {
 				//filter
 				{ _id: req.body.target_id },
 			);
-			if (!blogreview) return res.status(404).send('NOT FOUND');
+			if (!blogreview) return res.status(400).send('NOT FOUND');
 
 			// update to array
 
