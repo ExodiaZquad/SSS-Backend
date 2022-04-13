@@ -33,7 +33,7 @@ router.put('/dislike', auth, async (req, res) => {
 	// console.log(blogreview);
 });
 
-router.delete('/delete', auth, async (req, res) => {
+router.post('/delete', auth, async (req, res) => {
 	const blogreview = await blogreviewController.delete(req, res);
 });
 
