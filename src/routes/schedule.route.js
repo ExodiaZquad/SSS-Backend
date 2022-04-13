@@ -4,32 +4,36 @@ const scheduleController = require('../controllers/schedule.controller');
 const { isSameIdInList } = require('../services/schedule.service');
 const router = require('express').Router();
 
-router.get('/generate', async (req, res) => {
-	// GET theories form id
-	const { subjects: subjectsId } = req.body;
-	const theories = await subjectController.findTheoriesById(subjectsId);
+router.post('/generate', async (req, res) => {
+	const { subjects } = req.body;
 
-	// GET all labs
+	const theories = await subjectController.findTheoriesByIdAndSec(subjects);
+	if (!theories) return res.status(400).send({ success: 1 });
+
 	const labs = await subjectController.findLabs();
+	if (!labs) return res.status(400).send({ success: 2 });
 
-	// combination : filter => lenght == 4 && uniqe ID
+	// combination theories : filter => lenght == 4 && uniqe ID
 	let combination = combinations(theories).filter(
 		(temp) => temp.length == 4 && !isSameIdInList(temp),
 	);
 
+	// console.log(combination);
+	// console.log(combination.length);
+
 	// Generate schedules
 	const generated = scheduleController.generateSchdule(combination, labs);
-	// console.log(generated.length);
+	console.log(generated.length);
 
-	//// Read the generated
-	// for (let i = 0; i < generated.length; i++) {
-	// 	console.log('Value:', i + 1);
-	// 	for (let j = 0; j < generated[i].length; j++) {
-	// 		const { name, sec, type } = generated[i][j];
-	// 		console.log(type, '------', sec, '------', name);
-	// 	}
-	// 	console.log('');
-	// }
+	// //// Read the generated
+	// // for (let i = 0; i < generated.length; i++) {
+	// // 	console.log('Value:', i + 1);
+	// // 	for (let j = 0; j < generated[i].length; j++) {
+	// // 		const { name, sec, type } = generated[i][j];
+	// // 		console.log(type, '------', sec, '------', name);
+	// // 	}
+	// // 	console.log('');
+	// // }
 
 	return res.send(generated);
 });
