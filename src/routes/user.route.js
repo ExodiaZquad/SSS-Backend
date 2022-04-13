@@ -18,5 +18,9 @@ router.get('/', auth, async (req, res) => {
 router.get('/profile', auth, async (req, res) => {
 	await userController.getProfileData(req, res);
 });
+// @route /api/users/favschedule
+router.put('/fav_schedule', auth, async (req, res) => {
+	await userController.like_Schedule(req, res);
+});
 
 module.exports = router;
