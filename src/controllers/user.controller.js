@@ -1,5 +1,6 @@
 const { User } = require('../models/user.model');
 const { Blogreview } = require('../models/blogreview.model');
+const { Theory } = require('../models/theory.model');
 const {
 	validate,
 	generateAuthToken,
@@ -48,16 +49,40 @@ module.exports = {
 		try {
 			// find user by the _id given by the decoded token (auth)
 			const user = await User.findOne({ _id: req.userId.id });
-			const studentId = user.email.slice(0, 8); //bad approach!
 
-			// query specified user's reviews
-			const reviews = await Blogreview.find({
-				userId_Blogreview: studentId,
-			});
+			const getData_userBlogreview = async () => {
+				const studentId = user.email.split('@')[0]; //bad approach!
+
+				//map all theory subject in database
+				const map_theories = new Map();
+				let theories = await Theory.find();
+				for (let i = 0; i < theories.length; i++) {
+					map_theories.set(theories[i].id, theories[i].name);
+				}
+
+				// query specified user's reviews
+				const blogreview = await Blogreview.find({
+					userId_Blogreview: user._id,
+				});
+				if (blogreview.length == 0) return [];
+				//change data in object blogreview before send
+				let backup = [];
+				for (let i = 0; i < blogreview.length; i++) {
+					let temp = {
+						...blogreview[i].toObject(),
+						subjectName: map_theories.get(blogreview[i].subjectId),
+						userId_Blogreview: studentId,
+						userName_Blogreview: user.name,
+						imageUrl: user.imageUrl,
+					};
+					backup.push(temp);
+				}
+				return backup;
+			};
 
 			//return with user's reviews post(s) and favourite schedule(s)
 			const ret = {
-				blogReviews: reviews,
+				blogReviews: await getData_userBlogreview(),
 				favSchedule: user.favSchedule,
 			};
 
