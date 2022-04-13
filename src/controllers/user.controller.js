@@ -120,6 +120,7 @@ module.exports = {
 		try {
 			const user = await User.findOne({ _id: req.userId.id });
 			console.log(user);
+
 			return res.status(200).send('OK');
 		} catch (error) {
 			console.log(error);
