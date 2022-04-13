@@ -49,6 +49,12 @@ module.exports = {
 		try {
 			// find user by the _id given by the decoded token (auth)
 			const user = await User.findOne({ _id: req.userId.id });
+			if (user.length == 0) return {};
+			let temp_user = {
+				name: user.name,
+				email: user.email,
+				imageUrl: user.imageUrl,
+			};
 
 			const getData_userBlogreview = async () => {
 				const studentId = user.email.split('@')[0]; //bad approach!
@@ -82,6 +88,7 @@ module.exports = {
 
 			//return with user's reviews post(s) and favourite schedule(s)
 			const ret = {
+				userProfile: temp_user,
 				blogReviews: await getData_userBlogreview(),
 				favSchedule: user.favSchedule,
 			};
