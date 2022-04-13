@@ -33,9 +33,12 @@ module.exports = {
 
 	getAll: async (req, res) => {
 		try {
+			//get all blogreviews
 			let blogreview = await Blogreview.find();
+			if (blogreview.length == 0) return [];
 			let backup = [];
 
+			//map all user obj id -> userdata
 			let list_userId = await User.find();
 			const map_userId = new Map();
 			for (let i = 0; i < list_userId.length; i++) {
@@ -47,13 +50,14 @@ module.exports = {
 			}
 
 			// console.log(map_userId);
-
+			//map all theory subject in database
 			const map_theories = new Map();
 			let theories = await Theory.find();
 			for (let i = 0; i < theories.length; i++) {
 				map_theories.set(theories[i].id, theories[i].name);
 			}
 			// console.log(map_theories);
+			////change data in object blogreview before send
 			loop2: for (let i = 0; i < blogreview.length; i++) {
 				let temp = {
 					...blogreview[i].toObject(),
