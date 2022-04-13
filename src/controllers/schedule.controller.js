@@ -23,6 +23,9 @@ module.exports = {
 				}
 
 				schedule = schedule.concat(backup);
+				console.log('-----------------------');
+				console.log(schedule);
+				console.log('-----------------------');
 
 				if (isOverlap(schedule)) continue;
 

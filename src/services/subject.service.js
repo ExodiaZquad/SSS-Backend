@@ -40,7 +40,7 @@ const mergeData = (subjects, type) => {
 		const date = transformDate(subjects[i].class.start);
 		const time = transformTime(
 			subjects[i].class.start,
-			subjects[i].class.start,
+			subjects[i].class.end,
 		);
 
 		timeBackup.push(date + ' ' + time);
