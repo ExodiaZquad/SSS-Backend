@@ -28,6 +28,21 @@ module.exports = {
 
 			// Labs
 			const labs = await Lab.find({ id });
+
+			// Sort Lab
+			labs.sort((a, b) => {
+				let fa = a.sec;
+				let fb = b.sec;
+
+				if (fa < fb) {
+					return -1;
+				}
+				if (fa > fb) {
+					return 1;
+				}
+				return 0;
+			});
+
 			if (labs.length) {
 				const { sec, labTime } = mergeData(labs, 'labTime');
 				subject.labSec = sec;
