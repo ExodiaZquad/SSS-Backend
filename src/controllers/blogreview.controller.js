@@ -23,12 +23,23 @@ module.exports = {
 				return res.status(400).send('NOT FOUND SUBJECT');
 
 			//save db
-			let blogreview = new Blogreview(req.body);
+			// console.log(req.body);
+			let temp = {
+				...req.body,
+				textBlogreview: req.body.textBlogreview.replace(
+					/(?:\r\n|\r|\n)/g,
+					'<br/>',
+				),
+			};
+			// console.log(temp);
+			let blogreview = new Blogreview(temp);
+
+			// console.log(blogreview);
 			await blogreview.save();
 			return res.status(201).send(blogreview);
 		} catch (error) {
 			console.log(error);
-			return res.status(404).send();
+			return res.status(400).send();
 		}
 	},
 
