@@ -181,7 +181,6 @@ module.exports = {
 			let list_fav = user.favSchedule;
 			// console.log(list_fav);
 			for (let i = 0; i < list_fav.length; i++) {
-				// console.log('DOG');
 				// console.log(target_id);
 				// console.log(list_fav[i]._id.toString());
 				if (target_id == list_fav[i]._id.toString()) {
