@@ -1,6 +1,7 @@
 const { Blogreview } = require('../models/blogreview.model');
 const { User } = require('../models/user.model');
 const { Theory } = require('../models/theory.model');
+const _ = require('lodash');
 const {
 	validate,
 	validate_like_dislike,
@@ -78,7 +79,7 @@ module.exports = {
 				};
 				backup.push(temp);
 			}
-
+			backup = _.orderBy(backup, ['date']).reverse();
 			return backup;
 		} catch (error) {
 			console.log(error);
