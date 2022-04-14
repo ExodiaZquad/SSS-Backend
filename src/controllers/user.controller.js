@@ -3,6 +3,7 @@ const { Blogreview } = require('../models/blogreview.model');
 const { Theory } = require('../models/theory.model');
 const mongoose = require('mongoose');
 const _ = require('lodash');
+const { generateImageUser } = require('../services/userImage.service.js');
 const {
 	validate,
 	generateAuthToken,
@@ -32,8 +33,13 @@ module.exports = {
 			error = validateEmail(email);
 			if (error) return null;
 
+			let temp = {
+				...body,
+				imageUrl: generateImageUser(),
+			};
+
 			// create new user
-			let user = new User(body);
+			let user = new User(temp);
 
 			// hash googleId and save
 			const salt = await bcrypt.genSalt(10);
@@ -51,8 +57,11 @@ module.exports = {
 	getProfileData: async (req, res) => {
 		try {
 			// find user by the _id given by the decoded token (auth)
+
 			const user = await User.findOne({ _id: req.userId.id });
-			if (user.length == 0) return {};
+			if (user == null || user.length == 0)
+				return res.status(400).send({});
+			// console.log(user);
 			let temp_user = {
 				name: user.name,
 				email: user.email,
@@ -73,10 +82,16 @@ module.exports = {
 				const blogreview = await Blogreview.find({
 					userId_Blogreview: user._id,
 				});
-				if (blogreview.length == 0) return [];
+				if (blogreview.length == 0 || blogreview == null)
+					return res.status(400).send([]);
 				//change data in object blogreview before send
 				let backup = [];
-				for (let i = 0; i < blogreview.length; i++) {
+				loop: for (let i = 0; i < blogreview.length; i++) {
+					let haveId_Subject = map_theories.has(
+						blogreview[i].subjectId,
+					);
+					if (haveId_Subject == false) continue loop;
+
 					let temp = {
 						...blogreview[i].toObject(),
 						subjectName: map_theories.get(blogreview[i].subjectId),

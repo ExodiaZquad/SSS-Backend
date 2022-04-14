@@ -23,12 +23,23 @@ module.exports = {
 				return res.status(400).send('NOT FOUND SUBJECT');
 
 			//save db
-			let blogreview = new Blogreview(req.body);
+			// console.log(req.body);
+			let temp = {
+				...req.body,
+				textBlogreview: req.body.textBlogreview.replace(
+					/(?:\r\n|\r|\n)/g,
+					'<br/>',
+				),
+			};
+			// console.log(temp);
+			let blogreview = new Blogreview(temp);
+
+			// console.log(blogreview);
 			await blogreview.save();
 			return res.status(201).send(blogreview);
 		} catch (error) {
 			console.log(error);
-			return res.status(404).send();
+			return res.status(400).send();
 		}
 	},
 
@@ -57,9 +68,19 @@ module.exports = {
 			for (let i = 0; i < theories.length; i++) {
 				map_theories.set(theories[i].id, theories[i].name);
 			}
-			// console.log(map_theories);
+
 			////change data in object blogreview before send
-			loop2: for (let i = 0; i < blogreview.length; i++) {
+			loop: for (let i = 0; i < blogreview.length; i++) {
+				// console.log(map_userId.has(blogreview[i].userId_Blogreview));
+				let haveId_User = map_userId.has(
+					blogreview[i].userId_Blogreview,
+				);
+				if (haveId_User == false) continue loop;
+				// console.log(blogreview[i].userId_Blogreview);
+				let haveId_Subject = map_theories.has(blogreview[i].subjectId);
+				if (haveId_Subject == false) continue loop;
+
+				// console.log(map_theories);
 				let temp = {
 					...blogreview[i].toObject(),
 					_id: blogreview[i]._id,
@@ -67,9 +88,11 @@ module.exports = {
 
 					subjectName: map_theories.get(blogreview[i].subjectId),
 					textBlogreview: blogreview[i].textBlogreview,
+
 					userId_Blogreview: map_userId.get(
 						blogreview[i].userId_Blogreview,
 					)[0],
+
 					userName_Blogreview: map_userId.get(
 						blogreview[i].userId_Blogreview,
 					)[1],
