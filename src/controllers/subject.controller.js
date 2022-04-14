@@ -1,6 +1,7 @@
 const { Theory } = require('../models/theory.model');
 const { Lab } = require('../models/Lab.model');
 const { mergeData } = require('../services/subject.service');
+const { isOverlap } = require('../services/schedule.service');
 
 module.exports = {
 	findSubjectById: async (id) => {
@@ -8,6 +9,7 @@ module.exports = {
 			let subject = {};
 
 			const theories = await Theory.find({ id });
+			if (!theories) return null;
 
 			// sort Theories by sec
 			theories.sort((a, b) => {
@@ -101,6 +103,23 @@ module.exports = {
 			return null;
 		}
 	},
+	findGened: async () => {
+		try {
+			const categories = ['901', '902', '903', '904', '905'];
+			const theories = await Theory.find();
+			let gened = [];
+			for (let i = 0; i < theories.length; i++) {
+				if (categories.includes(theories[i].category)) {
+					gened.push(theories[i]);
+				}
+			}
+
+			return gened;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	},
 	findLabsByIdAndSec: async (theories) => {
 		try {
 			const labs = await Lab.find();
@@ -120,6 +139,31 @@ module.exports = {
 			}
 
 			return filtered;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	},
+	filterGened: async (generated, gened) => {
+		try {
+			let filteredGened = [];
+			for (let i = 0; i < generated.length; i++) {
+				let schedule = generated[i];
+				for (let j = 0; j < gened.length; j++) {
+					schedule.push(gened[j]);
+
+					if (isOverlap(schedule)) {
+						schedule.pop();
+						continue;
+					}
+
+					filteredGened.push(gened[j]);
+					schedule.pop();
+				}
+				break;
+			}
+
+			return filteredGened;
 		} catch (error) {
 			console.log(error);
 			return null;
