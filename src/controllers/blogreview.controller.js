@@ -79,7 +79,7 @@ module.exports = {
 				};
 				backup.push(temp);
 			}
-			backup = _.orderBy(backup, ['date']).reverse();
+			backup = _.sortBy(backup, ['date']).reverse();
 			return backup;
 		} catch (error) {
 			console.log(error);
