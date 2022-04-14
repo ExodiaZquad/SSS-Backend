@@ -3,11 +3,13 @@ const subjectController = require('../controllers/subject.controller');
 const scheduleController = require('../controllers/schedule.controller');
 const { isSameIdInList } = require('../services/schedule.service');
 const router = require('express').Router();
+const _ = require('lodash');
 
 router.get('/', async (req, res) => {
 	const { id } = req.query;
 	const subject = await subjectController.findSubjectById(id);
-	if (!subject) return res.status(400).send({ success: false });
+
+	if (_.isEmpty(subject)) return res.status(400).send({ success: false });
 
 	return res.send(subject);
 });
