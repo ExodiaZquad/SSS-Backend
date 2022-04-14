@@ -3,6 +3,7 @@ const { Blogreview } = require('../models/blogreview.model');
 const { Theory } = require('../models/theory.model');
 const mongoose = require('mongoose');
 const _ = require('lodash');
+const { generateImageUser } = require('../services/userImage.service.js');
 const {
 	validate,
 	generateAuthToken,
@@ -32,8 +33,13 @@ module.exports = {
 			error = validateEmail(email);
 			if (error) return null;
 
+			let temp = {
+				...body,
+				imageUrl: generateImageUser(),
+			};
+
 			// create new user
-			let user = new User(body);
+			let user = new User(temp);
 
 			// hash googleId and save
 			const salt = await bcrypt.genSalt(10);
