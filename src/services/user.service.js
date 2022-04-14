@@ -24,7 +24,14 @@ const validateEmail = (email) => {
 
 	return null;
 };
+const validate_like_dislike = (body) => {
+	const schema2 = Joi.object({
+		target_id: Joi.string().required(),
+	});
 
+	return schema2.validate(body);
+};
+exports.validate_like_dislike = validate_like_dislike;
 exports.validate = validate;
 exports.generateAuthToken = generateAuthToken;
 exports.validateEmail = validateEmail;
