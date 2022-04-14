@@ -18,5 +18,13 @@ router.get('/', auth, async (req, res) => {
 router.get('/profile', auth, async (req, res) => {
 	await userController.getProfileData(req, res);
 });
+// @route /api/users/like_schedule
+router.put('/like_schedule', auth, async (req, res) => {
+	await userController.like_Schedule(req, res);
+});
+
+router.put('/unlike_schedule', auth, async (req, res) => {
+	await userController.unlike_Schedule(req, res);
+});
 
 module.exports = router;

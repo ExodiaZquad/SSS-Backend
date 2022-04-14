@@ -92,13 +92,13 @@ module.exports = {
 
 			//validate
 			const { error } = validate_like_dislike(req.body);
-			if (error) return error.details[0].message;
+			if (error) return res.status(400).send(error.details[0].message);
 			//find targetpost id
 			let blogreview = await Blogreview.findOne(
 				//filter by object post id
 				{ _id: req.body.target_id },
 			);
-			if (!blogreview) return res.status(404).send('NOT FOUND');
+			if (!blogreview) return res.status(400).send('NOT FOUND');
 
 			// update to array
 			//user who like
@@ -128,13 +128,13 @@ module.exports = {
 
 			//validate
 			const { error } = validate_like_dislike(req.body);
-			if (error) return error.details[0].message;
+			if (error) return res.status(400).send(error.details[0].message);
 
 			let blogreview = await Blogreview.findOne(
 				//filter
 				{ _id: req.body.target_id },
 			);
-			if (!blogreview) return res.status(404).send('NOT FOUND');
+			if (!blogreview) return res.status(400).send('NOT FOUND');
 
 			// update to array
 
