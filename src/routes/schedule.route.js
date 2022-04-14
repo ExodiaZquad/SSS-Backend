@@ -15,15 +15,16 @@ router.post('/generate', async (req, res) => {
 
 	// combination theories : filter => lenght == 4 && uniqe ID
 	let combination = combinations(theories).filter(
-		(temp) => temp.length == 4 && !isSameIdInList(temp),
+		(temp) => temp.length == subjects.length && !isSameIdInList(temp),
 	);
 
+	console.log('combination', combination.length);
 	// console.log(combination);
 	// console.log(combination.length);
 
 	// Generate schedules
 	const generated = scheduleController.generateSchdule(combination, labs);
-	console.log(generated.length);
+	console.log('generated', generated.length);
 
 	// //// Read the generated
 	// // for (let i = 0; i < generated.length; i++) {
