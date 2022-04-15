@@ -100,6 +100,7 @@ module.exports = {
 					};
 					backup.push(temp);
 				}
+				backup.reverse();
 				return backup;
 			};
 
