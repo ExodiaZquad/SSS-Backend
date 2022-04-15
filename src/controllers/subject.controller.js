@@ -169,4 +169,27 @@ module.exports = {
 			return null;
 		}
 	},
+	transformGened: (gened) => {
+		const transform = [];
+		const idBackup = [];
+		for (let i = 0; i < gened.length; i++) {
+			if (idBackup.includes(gened[i].id)) {
+				console.log(gened[i].name, gened[i].sec);
+				for (let j = 0; j < transform.length; j++) {
+					if (gened[i].id == transform[j].id) {
+						transform[j].sec.push(gened[i].sec);
+					}
+				}
+			} else {
+				const temp = { ...gened[i].toObject() };
+				const formatSec = [temp.sec];
+				temp.sec = formatSec;
+
+				transform.push(temp);
+				idBackup.push(gened[i].id);
+			}
+		}
+		// console.log(transform);
+		return transform;
+	},
 };
