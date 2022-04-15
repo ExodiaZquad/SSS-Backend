@@ -82,8 +82,7 @@ module.exports = {
 				const blogreview = await Blogreview.find({
 					userId_Blogreview: user._id,
 				});
-				if (blogreview.length == 0 || blogreview == null)
-					return res.status(400).send([]);
+
 				//change data in object blogreview before send
 				let backup = [];
 				loop: for (let i = 0; i < blogreview.length; i++) {
