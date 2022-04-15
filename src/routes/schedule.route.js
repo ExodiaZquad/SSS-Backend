@@ -2,9 +2,10 @@ const combinations = require('combinations');
 const subjectController = require('../controllers/subject.controller');
 const scheduleController = require('../controllers/schedule.controller');
 const { isSameIdInList } = require('../services/schedule.service');
+const auth = require('../middleware/auth.middleware');
 const router = require('express').Router();
 
-router.post('/generate', async (req, res) => {
+router.post('/generate', auth, async (req, res) => {
 	const { subjects } = req.body;
 
 	const theories = await subjectController.findTheoriesByIdAndSec(subjects);

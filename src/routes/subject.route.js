@@ -2,11 +2,13 @@ const combinations = require('combinations');
 const subjectController = require('../controllers/subject.controller');
 const scheduleController = require('../controllers/schedule.controller');
 const { isSameIdInList } = require('../services/schedule.service');
+const auth = require('../middleware/auth.middleware');
 const router = require('express').Router();
 const _ = require('lodash');
 
-router.get('/', async (req, res) => {
-	const { id } = req.query;
+router.post('/', auth, async (req, res) => {
+	const { id } = req.body.params;
+	console.log(id);
 	const subject = await subjectController.findSubjectById(id);
 
 	if (_.isEmpty(subject)) return res.status(400).send({ success: false });
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
 	return res.send(subject);
 });
 
-router.post('/filter', async (req, res) => {
+router.post('/filter', auth, async (req, res) => {
 	const { subjects } = req.body;
 
 	const theories = await subjectController.findTheoriesByIdAndSec(subjects);
@@ -32,9 +34,9 @@ router.post('/filter', async (req, res) => {
 	const gened = await subjectController.findGened();
 
 	const ret = await subjectController.filterGened(generated, gened);
-	console.log(ret);
+
 	if (ret.length == 0) return res.send(ret);
-	console.log('pass');
+
 	const formatGened = subjectController.formatGened(ret);
 
 	return res.send(formatGened);
