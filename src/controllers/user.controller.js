@@ -161,7 +161,21 @@ module.exports = {
 					// console.log(_.isEqual(new_fav, oldlist));
 
 					if (_.isEqual(new_fav, oldlist)) {
-						return res.status(400).send('isSame');
+						// console.log(old_fav[k]._id.toString());
+
+						let list_fav = user.favSchedule;
+						for (let i = 0; i < list_fav.length; i++) {
+							if (
+								old_fav[k]._id.toString() ==
+								list_fav[i]._id.toString()
+							) {
+								list_fav.pull(list_fav[i]);
+								await user.save();
+								return res.status(200).send('Unliked fav');
+							}
+						}
+
+						return res.status(400).send('NOT FOUND ID FAV');
 					}
 				}
 			}
@@ -179,7 +193,7 @@ module.exports = {
 			return res.status(200).send('new_fav');
 		} catch (error) {
 			console.log(error);
-			return res.status(400).send();
+			return res.status(404).send();
 		}
 	},
 
