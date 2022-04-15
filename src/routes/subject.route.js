@@ -34,9 +34,9 @@ router.post('/filter', async (req, res) => {
 	const ret = await subjectController.filterGened(generated, gened);
 	if (!ret.length) return res.status(400).send({ success: false });
 
-	const transformGened = subjectController.transformGened(ret);
+	const formatGened = subjectController.formatGened(ret);
 
-	return res.send(transformGened);
+	return res.send(formatGened);
 });
 
 module.exports = router;

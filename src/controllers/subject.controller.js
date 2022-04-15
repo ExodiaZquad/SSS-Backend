@@ -169,12 +169,12 @@ module.exports = {
 			return null;
 		}
 	},
-	transformGened: (gened) => {
+	formatGened: (gened) => {
 		const transform = [];
 		const idBackup = [];
 		for (let i = 0; i < gened.length; i++) {
 			if (idBackup.includes(gened[i].id)) {
-				console.log(gened[i].name, gened[i].sec);
+				// console.log(gened[i].name, gened[i].sec);
 				for (let j = 0; j < transform.length; j++) {
 					if (gened[i].id == transform[j].id) {
 						transform[j].sec.push(gened[i].sec);
@@ -189,7 +189,11 @@ module.exports = {
 				idBackup.push(gened[i].id);
 			}
 		}
-		// console.log(transform);
+
+		for (let i = 0; i < transform.length; i++) {
+			transform[i].sec.sort();
+		}
+
 		return transform;
 	},
 };
