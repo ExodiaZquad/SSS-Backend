@@ -8,7 +8,10 @@ const morgan = require('morgan');
 // setup cors
 app.use(
 	cors({
-		origin: ['http://localhost:3000'],
+		origin: [
+			'http://localhost:3000',
+			'https://schedule-student-supports.netlify.app/',
+		],
 	}),
 );
 
