@@ -1,5 +1,5 @@
 const { Theory } = require('../models/theory.model');
-const { Lab } = require('../models/Lab.model');
+const { Lab } = require('../models/lab.model');
 const { mergeData } = require('../services/subject.service');
 const { isOverlap } = require('../services/schedule.service');
 
