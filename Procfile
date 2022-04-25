@@ -1,1 +1,1 @@
-web: cd src && node index.js
+web: npm i && cd src && node index.js
