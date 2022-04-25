@@ -1,1 +1,2 @@
-web: npm start
+web: cd src
+web: node index.js
